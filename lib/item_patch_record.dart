@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tinker_manager/http_holder.dart';
 import 'package:tinker_manager/model/patch_record.dart';
-import 'package:url_launcher/url_launcher_string.dart';
+import 'package:tinker_manager/patch_info_dialog.dart';
 
 class PatchRecordItem extends StatefulWidget {
   final PatchRecordResult _record;
@@ -42,10 +42,20 @@ class _PatchRecordItemState extends State<PatchRecordItem> {
     });
   }
 
+  void _showInfoDialog(BuildContext buildContext){
+    showDialog(
+        context: buildContext,
+        builder: (BuildContext context) {
+          return Dialog(
+            child: PatchInfoWidget(widget._record),
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => launchUrlString(widget._record.fileUrl),
+      onTap: () => _showInfoDialog(context),
       child: Card(
         child: Padding(
           padding: const EdgeInsets.all(18.0),

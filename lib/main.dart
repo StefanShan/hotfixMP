@@ -41,6 +41,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
   Future<PatchRecordResult> _showCreatePatchDialog(
       BuildContext buildContext) async {
     return await showDialog(
@@ -106,28 +107,35 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        actions: [
+          IconButton(
+            onPressed: () {
+              _refreshController.callRefresh();
+            },
+            icon: const Icon(Icons.refresh),
+            tooltip: "刷新",
+            iconSize: 30,
+          ),
+          IconButton(
+            onPressed: () {
+              _showCreatePatchDialog(context).then((value) {
+                _recordList?.insert(0, value);
+                setState(() {
+                  _recordList = _recordList?.toList();
+                });
+              });
+            },
+            icon: const Icon(Icons.add_circle_outline),
+            tooltip: "创建",
+            iconSize: 30,
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+          )
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: content,
       ),
-      floatingActionButton: FloatingActionButton(
-          child: const Text(
-            "创建",
-            style: TextStyle(color: Colors.white, fontSize: 14),
-          ),
-          onPressed: () {
-            _showCreatePatchDialog(context).then((value) {
-              _recordList?.insert(0, value);
-              setState(() {
-                _recordList = _recordList?.toList();
-              });
-            });
-          }),
-      floatingActionButtonLocation: CustomFloatActionButtonLocation(
-          FloatingActionButtonLocation.endFloat,
-          -30,
-          -30), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 
@@ -169,20 +177,5 @@ class _MyHomePageState extends State<MyHomePage> {
     return const Center(
       child: Text('数据加载失败，请重试。'),
     );
-  }
-}
-
-///自定义悬浮按钮的位置
-class CustomFloatActionButtonLocation extends FloatingActionButtonLocation {
-  final FloatingActionButtonLocation _location;
-  final double _offsetX;
-  final double _offsetY;
-
-  CustomFloatActionButtonLocation(this._location, this._offsetX, this._offsetY);
-
-  @override
-  Offset getOffset(ScaffoldPrelayoutGeometry scaffoldGeometry) {
-    var offset = _location.getOffset(scaffoldGeometry);
-    return Offset(offset.dx + _offsetX, offset.dy + _offsetY);
   }
 }

@@ -38,7 +38,7 @@ class _CreatePatchWidgetState extends State<CreatePatchWidget> {
   @override
   Widget build(BuildContext context) {
     return FractionallySizedBox(
-      widthFactor: 0.5,
+      widthFactor: 0.25,
       heightFactor: 0.5,
       child: Padding(
         padding: const EdgeInsets.all(30.0),
